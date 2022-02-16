@@ -1,0 +1,24 @@
+.about {
+  margin: auto;
+
+  & > * + * {
+    margin: 2rem 0;
+  }
+
+  h2 {
+    text-align: center;
+  }
+
+  .description {
+    text-align: center;
+    font-style: italic;
+  }
+
+  section {
+    & > div {
+      padding: 1rem;
+      margin: auto;
+      max-width: 600px;
+    }
+  }
+}

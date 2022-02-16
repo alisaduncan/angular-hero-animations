@@ -1,0 +1,16 @@
+mat-form-field {
+  margin-right: 1rem;
+}
+
+mat-nav-list {
+  width: 400px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+
+  & > span {
+    margin-left: 2rem;
+  }
+}

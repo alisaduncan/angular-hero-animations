@@ -1,0 +1,25 @@
+nav {
+  margin: 2rem auto;
+  min-width: 300px;
+  display: flex;
+  justify-content: space-around;
+}
+
+main {
+  margin: 2rem;
+  flex-grow: 1;
+}
+
+footer {
+  margin: 0.5rem;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  .copyright {
+    text-align: center;
+  }
+}

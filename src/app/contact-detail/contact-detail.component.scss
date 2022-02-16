@@ -1,0 +1,23 @@
+.contact-overview {
+  display: flex;
+  flex-direction: row;
+  & > div + div {
+    padding-left: 2rem;
+  }
+  margin: 2rem 0;
+}
+
+.avatar {
+  height: 8rem;
+  width: 8rem;
+  line-height: 8rem;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+
+  span {
+    margin: 0.5rem 0;
+  }
+}
