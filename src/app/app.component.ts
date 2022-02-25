@@ -3,6 +3,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import { animate, animateChild, group, query, style, transition, trigger, useAnimation } from '@angular/animations';
+import { slideOverRouteAnimation } from './animations';
 
 @Component({
   selector: 'app-root',
@@ -19,15 +20,35 @@ import { animate, animateChild, group, query, style, transition, trigger, useAni
         <a mat-button color="primary" class="mat-headline" routerLink="/about">About</a>
       </nav>
       <mat-divider></mat-divider>
-      <main>
-        <router-outlet></router-outlet>
+      <main [@routeAnimations]="getRoute(outlet)">
+        <router-outlet #outlet="outlet"></router-outlet>
       </main>
       <footer>
         <div class="mat-caption">Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
         <div class="copyright">&copy; 2022 Made with 💖 by <a href="https://twitter.com/AlisaDuncan">@AlisaDuncan</a> using <a href="https://angular.io/">Angular</a> and <a href="https://material.angular.io/">Angular Material</a></div>
       </footer>
     </div>
-  `
+  `,
+  animations: [
+    trigger('routeAnimations', [
+      transition(':increment', [
+        useAnimation(slideOverRouteAnimation, {
+          params: {
+            enter: 'translateX(-100%)',
+            leave: 'translateX(200%)'
+          }
+        })
+      ]),
+      transition(':decrement', [
+        useAnimation(slideOverRouteAnimation, {
+          params: {
+            enter: 'translate(200%)',
+            leave: 'translateX(-100%)'
+          }
+        })
+      ])
+    ])
+  ]
 })
 export class AppComponent {
   title = 'Hero Contacts';
@@ -35,5 +56,9 @@ export class AppComponent {
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     const avatarsSafeUrl = sanitizer.bypassSecurityTrustResourceUrl('assets/avatars.svg');
     iconRegistry.addSvgIconSetInNamespace('avatars', avatarsSafeUrl);
+  }
+
+  public getRoute(outlet: RouterOutlet) {
+    return outlet?.activatedRouteData?.['route'];
   }
 }

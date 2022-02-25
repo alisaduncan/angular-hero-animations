@@ -3,6 +3,7 @@ import { ContactsService } from '../apis/contacts.service';
 import { Contact } from '../apis/model';
 import { take } from 'rxjs';
 import { animate, group, query, stagger, style, transition, trigger, useAnimation } from '@angular/animations';
+import { animateListIn } from '../animations';
 
 @Component({
   selector: 'app-contacts',
@@ -16,7 +17,7 @@ import { animate, group, query, stagger, style, transition, trigger, useAnimatio
     <button mat-raised-button color="primary" (click)="add(contactName.value); contactName.value=''" [disabled]="!contactName.value">
       ADD CONTACT
     </button>
-    <mat-nav-list>
+    <mat-nav-list [@animateIn]="contacts.length">
       <mat-list-item *ngFor="let contact of contacts">
         <a matLine routerLink="/contacts/{{contact.id}}">
           <div class="list-item">
@@ -26,9 +27,31 @@ import { animate, group, query, stagger, style, transition, trigger, useAnimatio
         </a>
       </mat-list-item>
     </mat-nav-list>
-  `
+  `,
+  animations: [
+    trigger('animateIn', [
+      transition('* => *', [
+        useAnimation(animateListIn)
+      ])
+    ]),
+    trigger('pageAnimations', [
+      transition(':enter', [
+        group([
+          query('mat-form-field', [
+            style({ opacity: 0 }),
+            animate(1000, style({ opacity: 1 }))
+          ]),
+          query('button', [
+            style({ opacity: 0, transform: 'translateX(-100%)' }),
+            animate('1s ease-out', style({ opacity: 1, transform: 'none' }))
+          ])
+        ])
+      ])
+    ])
+  ]
 })
 export class ContactsComponent implements OnInit {
+  @HostBinding('@pageAnimations') public animatePage = true;
   public contacts: Contact[] = [];
 
   constructor(private contactsService: ContactsService) { }
@@ -44,7 +67,7 @@ export class ContactsComponent implements OnInit {
     name = name.trim();
     if (!name) { return; }
 
-    this.contactsService.addContact({name} as Contact)
+    this.contactsService.addContact({ name } as Contact)
       .pipe(
         take(1)
       ).subscribe((c: Contact) => this.contacts.push(c))

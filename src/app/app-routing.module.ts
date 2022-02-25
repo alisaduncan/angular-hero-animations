@@ -8,12 +8,12 @@ import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'contacts', component: ContactsComponent },
-  { path: 'contacts/:id', component: ContactDetailComponent },
-  { path: 'groups', component: GroupsComponent },
-  { path: 'groups/:id', component: GroupDetailComponent },
-  { path: 'about', component: AboutComponent },
+  { path: 'dashboard', component: DashboardComponent, data: { route: 0 } },
+  { path: 'contacts', component: ContactsComponent, data: { route: 1 } },
+  { path: 'contacts/:id', component: ContactDetailComponent, data: { route: 2 } },
+  { path: 'groups', component: GroupsComponent, data: { route: 3 } },
+  { path: 'groups/:id', component: GroupDetailComponent, data: { route: 4 } },
+  { path: 'about', component: AboutComponent, data: { route: 5 } },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: '**', redirectTo: '/dashboard', pathMatch: 'full' }
 ];

@@ -3,6 +3,7 @@ import { GroupsService } from '../apis/groups.service';
 import { Group } from '../apis/model';
 import { take } from 'rxjs';
 import { transition, trigger, useAnimation } from '@angular/animations';
+import { animateListIn } from '../animations';
 
 @Component({
   selector: 'app-groups',
@@ -16,7 +17,7 @@ import { transition, trigger, useAnimation } from '@angular/animations';
     <button mat-raised-button color="primary" (click)="add(groupName.value); groupName.value=''" [disabled]="!groupName.value">
       ADD GROUP
     </button>
-    <mat-nav-list>
+    <mat-nav-list [@animateIn]="groups.length">
       <mat-list-item *ngFor="let group of groups">
         <a matLine routerLink="/groups/{{group.id}}">
           <div class="list-item">
@@ -26,7 +27,14 @@ import { transition, trigger, useAnimation } from '@angular/animations';
         </a>
       </mat-list-item>
     </mat-nav-list>
-  `
+  `,
+  animations: [
+    trigger('animateIn', [
+      transition('* => *', [
+        useAnimation(animateListIn)
+      ])
+    ])
+  ]
 })
 export class GroupsComponent implements OnInit {
   public groups: Group[] = [];
@@ -43,7 +51,7 @@ export class GroupsComponent implements OnInit {
     name = name.trim();
     if (!name) { return; }
 
-    this.groupsService.addGroup({name} as Group)
+    this.groupsService.addGroup({ name } as Group)
       .pipe(take(1))
       .subscribe(group => this.groups.push(group));
   }
